@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Forms</title>
+    <link rel="stylesheet" href="login.css">
+    <script>
+        function showForm(formId) {
+            document.querySelectorAll('.form-container').forEach(container => {
+                container.style.display = 'none';
+            });
+            document.getElementById(formId).style.display = 'block';
+        }
+
+        // Initialize with the login form
+        document.addEventListener('DOMContentLoaded', () => {
+            showForm('login-container');
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="auth-wrapper">
+
+        <div id="login-container" class="form-container">
+            <form class="auth-form" action="hospital.html" method="get">
+                <h2>Login 🔑</h2>
+                <div class="input-group">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="submit-btn">Log In</button>
+                <p class="form-footer">
+                    Don't have an account? <a href="#" onclick="showForm('signup-container'); return false;">Sign Up</a>
+                </p>
+                <p class="form-footer">
+                    <a href="#" onclick="showForm('forgot-container'); return false;">Forgot Password?</a>
+                </p>
+            </form>
+        </div>
+
+        <div id="signup-container" class="form-container" style="display:none;">
+            <form class="auth-form" action="hospital.html" method="post">
+                <h2>Sign Up ✨</h2>
+                <div class="input-group">
+                    <label for="signup-username">Username:</label>
+                    <input type="text" id="signup-username" required>
+                </div>
+                <div class="input-group">
+                    <label for="signup-email">Email:</label>
+                    <input type="email" id="signup-email" required>
+                </div>
+                <div class="input-group">
+                    <label for="signup-password">Password:</label>
+                    <input type="password" id="signup-password" required>
+                </div>
+                <div class="input-group">
+                    <label for="signup-confirm-password">Confirm Password:</label>
+                    <input type="password" id="signup-confirm-password" required>
+                </div>
+                <button type="submit" class="submit-btn">Create Account</button>
+                <p class="form-footer">
+                    Already have an account? <a href="#" onclick="showForm('login-container'); return false;">Log In</a>
+                </p>
+            </form>
+        </div>
+
+        <div id="forgot-container" class="form-container" style="display:none;">
+            <form class="auth-form">
+                <h2>Forgot Password? ❓</h2>
+                <p class="instructions">Enter your email address and we'll send you a link to reset your password.</p>
+                <div class="input-group">
+                    <label for="forgot-email">Email:</label>
+                    <input type="email" id="forgot-email" required>
+                </div>
+                <button type="submit" class="submit-btn">Reset Password</button>
+                <p class="form-footer">
+                    <a href="#" onclick="showForm('login-container'); return false;">Back to Login</a>
+                </p>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
