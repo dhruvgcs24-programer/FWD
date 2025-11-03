@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeevrakshak Login</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        function showForm(formId) {
+            // Hide all form/choice containers first
+            document.querySelectorAll('.form-container, #choice-container').forEach(container => {
+                container.style.display = 'none';
+            });
+            // Show the requested container
+            document.getElementById(formId).style.display = 'block';
+        }
+
+        // --- HANDLER FOR PATIENT LOGIN ---
+        function handlePatientLogin(event) {
+            event.preventDefault(); // Stop default form submission
+            
+            const patientName = document.getElementById('patient-login-name').value.trim();
+            
+            if (patientName) {
+                // Store the name in local storage for access on the patient page
+                localStorage.setItem('current_patient_name', patientName);
+                
+                // Redirect to the patient view page
+                window.location.href = 'patient.html';
+            } else {
+                alert('Please enter your name to log in.');
+            }
+        }
+
+        // --- HANDLER FOR HOSPITAL LOGIN (Staff/Admin) ---
+        function handleHospitalLogin(event) {
+            event.preventDefault(); // Stop default form submission
+            
+            const staffId = document.getElementById('hospital-login-id').value.trim();
+            
+            if (staffId) {
+                // In a real app, you would validate credentials here.
+                // For now, we redirect directly.
+                console.log(`Hospital Staff/Admin ID: ${staffId} logged in.`);
+                
+                // Redirect to the hospital view page
+                window.location.href = 'hospital.html';
+            } else {
+                alert('Please enter your Staff ID to log in.');
+            }
+        }
+
+        // Initialize with the choice screen
+        document.addEventListener('DOMContentLoaded', () => {
+            showForm('choice-container');
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="auth-wrapper">
+        <h1 class="main-title"><i class="fas fa-heartbeat"></i> Jeevrakshak Portal</h1>
+
+        <div id="choice-container" class="form-container">
+            <h2>Select Your Role</h2>
+            <p class="instructions">Are you a patient or a hospital staff member?</p>
+            
+            <div class="role-selection">
+                <button class="role-btn patient-btn" onclick="showForm('patient-login-container')">
+                    <i class="fas fa-user-injured"></i>
+                    Patient Login
+                </button>
+                <button class="role-btn hospital-btn" onclick="showForm('hospital-login-container')">
+                    <i class="fas fa-hospital-user"></i>
+                    Hospital Login
+                </button>
+            </div>
+        </div>
+
+
+        <div id="patient-login-container" class="form-container" style="display: none;">
+            <form class="auth-form" onsubmit="handlePatientLogin(event); return false;">
+                <h2>Patient Login 👤</h2>
+                <div class="input-group">
+                    <label for="patient-login-name">Patient Name:</label>
+                    <input type="text" id="patient-login-name" required>
+                </div>
+                <div class="input-group">
+                    <label for="patient-login-password">Password:</label>
+                    <input type="password" id="patient-login-password" required>
+                </div>
+                <button type="submit" class="submit-btn patient-btn">Log In</button>
+                <button type="button" class="back-btn" onclick="showForm('choice-container')">← Back to Role Select</button>
+            </form>
+        </div>
+
+        <div id="hospital-login-container" class="form-container" style="display: none;">
+            <form class="auth-form" onsubmit="handleHospitalLogin(event); return false;">
+                <h2>Hospital Staff Login ⚕️</h2>
+                <div class="input-group">
+                    <label for="hospital-login-id">Staff/Admin ID:</label>
+                    <input type="text" id="hospital-login-id" required>
+                </div>
+                <div class="input-group">
+                    <label for="hospital-login-password">Password:</label>
+                    <input type="password" id="hospital-login-password" required>
+                </div>
+                <button type="submit" class="submit-btn hospital-btn">Log In</button>
+                <button type="button" class="back-btn" onclick="showForm('choice-container')">← Back to Role Select</button>
+            </form>
+        </div>
+        
+    </div>
+
+</body>
+
+</html>
