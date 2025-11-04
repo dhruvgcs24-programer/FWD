@@ -41,9 +41,10 @@
             const staffId = document.getElementById('hospital-login-id').value.trim();
             
             if (staffId) {
-                // In a real app, you would validate credentials here.
-                // For now, we redirect directly.
-                console.log(`Hospital Staff/Admin ID: ${staffId} logged in.`);
+                // *** THIS IS THE CRITICAL LINE THAT SAVES YOUR ID (e.g., '007') ***
+                localStorage.setItem('current_admin_id', staffId);
+                
+                console.log(`Hospital Staff/Admin ID: ${staffId} logged in and saved to localStorage.`);
                 
                 // Redirect to the hospital view page
                 window.location.href = 'hospital.html';
