@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jeevrakshak Dashboard</title>
+    <link rel="stylesheet" href="patient.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+ </head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+           <h1 style="font-size: 24px;"> <i class="fas fa-heartbeat"></i> Jeevrakshak</h1>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Prescription</a>
+            <a href="#">Blog</a>
+            <a href="#">Contact Us</a>
+        </nav>
+        <div class="user-profile">
+            <i class="fas fa-user-circle"></i>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <section class="left-column">
+            <div class="card progress-card">
+                <h3>Progress At A Glance</h3>
+                <div class="progress-content">
+                    <div class="progress-circle">
+                        <span class="activity-label">Activity</span>
+                    </div>
+                    <div class="progress-bars">
+                        <div class="bar-container"><div class="bar" style="height: 60%;"></div><small>Mon</small></div>
+                        <div class="bar-container"><div class="bar" style="height: 40%;"></div><small>Tue</small></div>
+                        <div class="bar-container"><div class="bar" style="height: 90%;"></div><small>Wed</small></div>
+                        <div class="bar-container"><div class="bar" style="height: 80%;"></div><small>Thu</small></div>
+                        <div class="bar-container"><div class="bar" style="height: 55%;"></div><small>Fri</small></div>
+                        <div class="bar-container"><div class="bar" style="height: 70%;"></div><small>Sat</small></div>
+                        <div class="bar-container"><div class="bar" style="height: 85%;"></div><small>Sun</small></div>
+                    </div>
+                </div>
+                <div class="progress-footer">
+                    <span>Sleep</span>
+                    <span>Heart Rate</span>
+                    <span>Hours Slept</span>
+                </div>
+            </div>
+
+            <div class="card goals-card">
+                <h3>Daily Goals <span id="goals-count" style="font-size: 14px; font-weight: normal; color: var(--primary-blue);"></span></h3>
+                <div class="goal-item">
+                    <input type="checkbox" id="water" checked><label for="water">Drink 8 Glasses Water</label>
+                    <div class="progress-bar-small"><div class="progress-fill" id="water-progress" style="width: 100%;"></div></div>
+                </div>
+                <div class="goal-item">
+                    <input type="checkbox" id="walk" checked><label for="walk">Walk 10k Steps</label>
+                    <div class="progress-bar-small"><div class="progress-fill" id="walk-progress" style="width: 100%;"></div></div>
+                </div>
+                <div class="goal-item">
+                    <input type="checkbox" id="meditate"><label for="meditate">Meditate</label>
+                    <div class="progress-bar-small"><div class="progress-fill" id="meditate-progress" style="width: 0%;"></div></div>
+                </div>
+                <div class="goal-item">
+                    <input type="checkbox" id="cycle"><label for="cycle">Cycle 10km</label>
+                    <div class="progress-bar-small"><div class="progress-fill" id="cycle-progress" style="width: 0%;"></div></div>
+                </div>
+            </div>
+
+            <div class="health-plan-container">
+                <div class="card plan-card">
+                    <h4><i class="fas fa-utensils"></i> Nutrition Guide</h4>
+                    <p>Daily Calorie Target: 2400 kcal</p>
+                    <p>Beginner Yoga - 40 min</p>
+                </div>
+                <div class="card plan-card">
+                    <h4><i class="fas fa-dumbbell"></i> Workout Routines</h4>
+                    <p>Cardio List Down</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="right-column">
+            <div class="card appointments-card">
+                <h3>Upcoming Appointments</h3>
+                <p>Dermatology Appointment: Acne Update</p>
+                
+                <div class="calendar-month">December</div>
+                <div class="calendar-grid">
+                    <span class="day-label">Sun</span><span class="day-label">Mon</span><span class="day-label">Tue</span><span class="day-label">Wed</span><span class="day-label">Thu</span><span class="day-label">Fri</span><span class="day-label">Sat</span>
+                    <span>1</span><span class="date-highlight">2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+                    <span>8</span><span>9</span><span>10</span><span>11</span><span class="date-highlight">12</span><span>13</span><span>14</span>
+                    <span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span>
+                    <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
+                    <span>29</span><span>30</span><span>31</span>
+                </div>
+
+                <div class="appointment-details">
+                    <i class="fas fa-clock"></i> Dr. Chen - Cardiology Consult @ 2 PM
+                </div>
+            </div>
+            
+            <div class="card bmi-card">
+                <h3>BMI Calculator</h3>
+                <label for="weight">Weight (kg)</label>
+                <input type="text" id="weight" placeholder="Enter weight">
+                <label for="height">Height (cm)</label>
+                <input type="text" id="height" placeholder="Enter height">
+                <button class="calculate-btn">Calculate BMI</button>
+            </div>
+            
+            <div class="card connect-card">
+                <h3>Connect with a Doctor</h3>
+                <div class="doctor-profile">
+                    <img src="doctor.png" alt="Dr. Haqqif Ahmed"> <div class="doctor-info">
+                        <h4>Dr. Haqqif Ahmed</h4>
+                        <p>General Physician</p>
+                        <small>11 am - 5 pm</small>
+                    </div>
+                    <button class="book-now-btn">Book Now</button>
+                </div>
+            </div>
+
+            <div class="card services-card">
+                <h3>Nearby Services</h3>
+                <div class="service-item">
+                    <i class="fas fa-prescription-bottle-alt"></i>
+                    <div>
+                        <h4>Pharmacies</h4>
+                        <small>Bull Temple Road</small>
+                    </div>
+                </div>
+                <div class="service-item">
+                    <i class="fas fa-clinic-medical"></i>
+                    <div>
+                        <h4>Clinics</h4>
+                        <small>Ashok Nagar</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button class="sos-button">SOS</button>
+
+    <script src="patient.js"></script> 
+</body>
+</html>
