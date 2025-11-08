@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. BMI Calculator Logic
-    // ... (rest of the BMI logic remains the same) ...
-
     const weightInput = document.getElementById('weight');
     const heightInput = document.getElementById('height');
     const calculateBtn = document.querySelector('.calculate-btn');
@@ -46,22 +44,84 @@ document.addEventListener('DOMContentLoaded', () => {
         bmiCard.appendChild(resultDisplay);
     });
 
-    // 2. Daily Goals Toggle Logic (Simple console log and visual feedback)
+    // --- 2. Daily Goals Toggle Logic (MODIFIED to include counter and bar updates) ---
     const goalCheckboxes = document.querySelectorAll('.goals-card input[type="checkbox"]');
+    const goalsCountDisplay = document.getElementById('goals-count');
+    const totalGoals = goalCheckboxes.length;
+
+    // Get references to the specific progress bars
+    const waterProgressBar = document.getElementById('water-progress');
+    const walkProgressBar = document.getElementById('walk-progress');
+    const meditateProgressBar = document.getElementById('meditate-progress');
+    const cycleProgressBar = document.getElementById('cycle-progress');
+
+    /**
+     * Calculates and updates the display count for daily goals.
+     */
+    function updateGoalProgress() {
+        // Count how many checkboxes are checked (completed goals)
+        const completedGoals = Array.from(goalCheckboxes).filter(cb => cb.checked).length;
+        
+        // Update the count text in the HTML
+        if (goalsCountDisplay) {
+            goalsCountDisplay.textContent = ` (${completedGoals}/${totalGoals} Completed)`;
+        }
+
+        // --- Initialize Bar Widths on Load ---
+        // This is necessary to ensure the visual state matches the 'checked' attribute on load
+        if (waterProgressBar) waterProgressBar.style.width = document.getElementById('water').checked ? '100%' : '0%';
+        if (walkProgressBar) walkProgressBar.style.width = document.getElementById('walk').checked ? '100%' : '0%';
+        if (meditateProgressBar) meditateProgressBar.style.width = document.getElementById('meditate').checked ? '100%' : '0%';
+        if (cycleProgressBar) cycleProgressBar.style.width = document.getElementById('cycle').checked ? '100%' : '0%';
+        // --- End Initialization ---
+    }
 
     goalCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', (event) => {
             const goalLabel = event.target.nextElementSibling.textContent;
-            if (event.target.checked) {
+            const isChecked = event.target.checked;
+            const targetId = event.target.id;
+
+            if (isChecked) {
                 console.log(`Goal Completed: ${goalLabel}`);
-                // You might update a server or database here
             } else {
                 console.log(`Goal Reset: ${goalLabel}`);
             }
+
+            // --- Progress Bar Update Logic ---
+            // Update the progress bar only if the goal is completed/reset
+            switch (targetId) {
+                case 'water':
+                    if (waterProgressBar) {
+                        waterProgressBar.style.width = isChecked ? '100%' : '0%';
+                    }
+                    break;
+                case 'walk':
+                    if (walkProgressBar) {
+                        walkProgressBar.style.width = isChecked ? '100%' : '0%';
+                    }
+                    break;
+                case 'meditate':
+                    if (meditateProgressBar) {
+                        meditateProgressBar.style.width = isChecked ? '100%' : '0%';
+                    }
+                    break;
+                case 'cycle':
+                    if (cycleProgressBar) {
+                        cycleProgressBar.style.width = isChecked ? '100%' : '0%';
+                    }
+                    break;
+            }
+            // --- END: Progress Bar Update Logic ---
+
+            // Update the count display after any change
+            updateGoalProgress();
         });
     });
 
-    // ... (existing patient.js code) ...
+    // Initialize the goals count and bars on page load
+    updateGoalProgress();
+
 
     // 3. SOS Button Alert - MODIFIED LOGIC
     const sosButton = document.querySelector('.sos-button');
