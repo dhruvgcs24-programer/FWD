@@ -50,20 +50,22 @@
             </div>
 
             <div class="card goals-card">
-                <h3>Daily Goals</h3>
+                <h3>Daily Goals <span id="goals-count" style="font-size: 14px; font-weight: normal; color: var(--primary-blue);"></span></h3>
                 <div class="goal-item">
                     <input type="checkbox" id="water" checked><label for="water">Drink 8 Glasses Water</label>
+                    <div class="progress-bar-small"><div class="progress-fill" id="water-progress" style="width: 100%;"></div></div>
                 </div>
                 <div class="goal-item">
                     <input type="checkbox" id="walk" checked><label for="walk">Walk 10k Steps</label>
-                    <div class="progress-bar-small"><div class="progress-fill" style="width: 80%;"></div></div>
+                    <div class="progress-bar-small"><div class="progress-fill" id="walk-progress" style="width: 100%;"></div></div>
                 </div>
                 <div class="goal-item">
                     <input type="checkbox" id="meditate"><label for="meditate">Meditate</label>
-                    <div class="progress-bar-small"><div class="progress-fill" style="width: 50%;"></div></div>
+                    <div class="progress-bar-small"><div class="progress-fill" id="meditate-progress" style="width: 0%;"></div></div>
                 </div>
                 <div class="goal-item">
                     <input type="checkbox" id="cycle"><label for="cycle">Cycle 10km</label>
+                    <div class="progress-bar-small"><div class="progress-fill" id="cycle-progress" style="width: 0%;"></div></div>
                 </div>
             </div>
 
