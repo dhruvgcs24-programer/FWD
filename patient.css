@@ -1,0 +1,470 @@
+/* Basic Reset and Global Styles */
+:root {
+    --primary-blue: #007bff; /* A bright, standard blue */
+    --patient-teal: #1abc9c;
+    --secondary-blue: #e0f0ff; /* Light blue background for sections/highlights */
+    --card-bg: #ffffff;
+    --main-bg: #f4f7f9; /* Off-white/light gray background */
+    --text-dark: #333;
+    --text-light: #666;
+    --progress-fill: #4CAF50; /* Green for progress bars */
+    --progress-unfill: #e9ecef;
+    --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --border-radius-card: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+    background-color: var(--main-bg);
+    color: var(--text-dark);
+    min-height: 100vh;
+}
+
+/* * 1. HEADER STYLES */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px; 
+    background-color: var(--card-bg);
+    border-bottom: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo h1 {
+    font-size: 24px;
+    color: var(--primary-blue);
+    font-weight: 700;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-light);
+    margin-left: 20px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--primary-blue);
+}
+
+.user-profile i {
+    font-size: 24px;
+    color: var(--primary-blue);
+}
+
+/* * 2. DASHBOARD CONTAINER - Use Grid for Responsiveness */
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Default to single column for mobile */
+    gap: 30px;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Media Query for Tablet/Desktop */
+@media (min-width: 768px) {
+    .dashboard-container {
+        grid-template-columns: 2fr 1fr; /* Two columns: 2/3 for main, 1/3 for side */
+    }
+    .header {
+        padding: 20px 50px;
+    }
+}
+
+
+/* * 3. CARD STYLING */
+.card {
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: var(--border-radius-card);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 20px; 
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.card h3 {
+    font-size: 1.2em;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--secondary-blue);
+    padding-bottom: 5px;
+}
+
+/* --- Progress Card Specific --- */
+.progress-card {
+    grid-column: 1 / -1; 
+}
+
+@media (min-width: 768px) {
+    .progress-card {
+        grid-column: auto; 
+    }
+}
+
+.progress-content {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    gap: 30px;
+}
+
+@media (min-width: 600px) {
+    .progress-content {
+        flex-direction: row; 
+        align-items: flex-start;
+    }
+}
+
+
+.progress-circle {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: conic-gradient(var(--progress-fill) 0%, var(--progress-unfill) 0%); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.progress-circle::before {
+    content: '';
+    position: absolute;
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    background-color: var(--card-bg);
+}
+
+.activity-label {
+    position: relative;
+    z-index: 1;
+    color: var(--text-dark);
+    text-align: center;
+    font-size: 0.8em;
+}
+
+.activity-label strong {
+    font-size: 1.3em;
+    display: block;
+}
+
+.progress-bars {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%; 
+}
+
+@media (min-width: 600px) {
+    .progress-bars {
+        width: auto;
+    }
+}
+
+.goal-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between; /* Added to space out elements */
+}
+
+.goal-text {
+    flex-shrink: 0;
+    width: 100px;
+    font-size: 0.9em;
+    color: var(--text-light);
+}
+
+.progress-bar-container {
+    flex-grow: 1;
+    height: 10px;
+    background-color: var(--progress-unfill);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%; 
+    background-color: var(--progress-fill);
+    transition: width 0.5s ease-in-out;
+}
+
+/* NEW: Goal Tracker Input Area */
+.goal-tracker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    width: 100%;
+}
+
+.goal-tracker label {
+    font-weight: 500;
+    flex-basis: 15%;
+    text-align: right;
+}
+
+.goal-tracker input {
+    flex-basis: 15%;
+    width: 65px;
+    padding: 8px 5px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.goal-tracker .update-goal-btn {
+    flex-grow: 1;
+    padding: 10px 15px;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.goal-tracker .update-goal-btn:hover {
+    background-color: #0056b3;
+}
+
+.goal-count {
+    width: 30px;
+    text-align: right;
+    font-weight: bold;
+    color: var(--progress-fill);
+}
+
+/* NEW: Health Metrics Card Styles */
+.health-metrics-card {
+    /* No additional grid-column needed, it's in the left-column */
+}
+
+.health-metrics-card h3 {
+    color: #9b59b6; /* A distinct color for metrics */
+}
+
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 15px;
+    text-align: center;
+}
+
+.metric-item {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: var(--secondary-blue);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.metric-item i {
+    font-size: 24px;
+    color: var(--primary-blue);
+    margin-bottom: 5px;
+}
+
+.metric-item p {
+    font-size: 0.85em;
+    color: var(--text-light);
+    margin: 0;
+}
+
+.metric-item h4 {
+    font-size: 1.4em;
+    color: var(--text-dark);
+    margin: 5px 0 0 0;
+}
+
+.metric-item small {
+    font-size: 0.6em;
+    font-weight: normal;
+    color: var(--text-light);
+}
+
+/* --- Right Column: BMI, Connect, Services --- */
+
+/* BMI Card */
+.bmi-card div { /* Targeted the div instead of .bmi-input-group */
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.bmi-card label {
+    flex-shrink: 0;
+    width: 100px; 
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.bmi-card input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.calculate-btn {
+    padding: 10px 15px;
+    background-color: var(--patient-teal);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.calculate-btn:hover {
+    background-color: #16a085;
+}
+
+#bmi-result {
+    margin-top: 15px;
+    padding: 10px;
+    border-top: 1px solid #eee;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+/* Connect Card (Doctor Profile) */
+.doctor-profile {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.doctor-profile img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+    border: 3px solid var(--secondary-blue);
+}
+
+.doctor-info {
+    flex-grow: 1;
+}
+
+.doctor-info h4 {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: 1.1em;
+}
+
+.doctor-info p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.9em;
+}
+
+.doctor-info small {
+    display: block;
+    color: var(--patient-teal);
+}
+
+.book-now-btn {
+    padding: 8px 15px;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    flex-shrink: 0;
+}
+
+.book-now-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Services Card */
+.service-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.service-item:last-child {
+    border-bottom: none;
+}
+
+.service-item:hover {
+    background-color: var(--secondary-blue);
+    cursor: pointer;
+}
+
+.service-item i {
+    font-size: 24px; 
+    color: var(--patient-teal);
+    margin-right: 15px;
+}
+
+.service-item h4 {
+    font-size: 1em;
+    margin-bottom: 2px;
+}
+
+/* * 5. SOS BUTTON */
+.sos-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 70px; 
+    height: 70px;
+    border-radius: 50%;
+    background-color: #ff3333; 
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    border: 5px solid white; 
+    box-shadow: 0 6px 15px rgba(255, 51, 51, 0.6);
+    cursor: pointer;
+    z-index: 1000;
+    animation: pulse 1.5s infinite; 
+    transition: transform 0.2s;
+}
+
+.sos-button:hover {
+    transform: scale(1.05);
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0.6); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 51, 51, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0); }
+}
