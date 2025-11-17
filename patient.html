@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jeevrakshak Dashboard</title>
+    <link rel="stylesheet" href="patient.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+ </head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+           <h1> <i class="fas fa-heartbeat"></i> Jeevrakshak</h1>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Prescription</a>
+            <a href="#">Blog</a>
+            <a href="#">Contact Us</a>
+        </nav>
+        <div class="user-profile">
+            <i class="fas fa-user-circle"></i>
+            <span id="patient-name-display">Loading...</span> 
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <section class="left-column">
+            <div class="card progress-card">
+                <h3>Progress At A Glance <i class="fas fa-chart-line"></i></h3>
+                <div class="progress-content">
+                    <div class="progress-circle">
+                        <span class="progress-value" id="overall-progress-value">--%</span>
+                        <span class="activity-label">Overall</span>
+                    </div>
+                    <div class="progress-details">
+                        <div class="detail-item">
+                            <h4>Steps Goal (x1000)</h4>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar steps" id="steps-bar" style="width: 0%;"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span id="steps-value">0</span> / <span id="steps-target">10</span>
+                                <div class="goal-actions">
+                                    <button class="update-goal-btn" data-type="steps" data-action="add">+</button>
+                                    <button class="update-goal-btn" data-type="steps" data-action="remove">-</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <h4>Water Goal (Liters)</h4>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar water" id="water-bar" style="width: 0%;"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span id="water-value">0</span> / <span id="water-target">8</span>
+                                <div class="goal-actions">
+                                    <button class="update-goal-btn" data-type="water" data-action="add">+</button>
+                                    <button class="update-goal-btn" data-type="water" data-action="remove">-</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <h4>Sleep Goal (Hours)</h4>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar sleep" id="sleep-bar" style="width: 0%;"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span id="sleep-value">0</span> / <span id="sleep-target">8</span>
+                                <div class="goal-actions">
+                                    <button class="update-goal-btn" data-type="sleep" data-action="add">+</button>
+                                    <button class="update-goal-btn" data-type="sleep" data-action="remove">-</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card vitals-card">
+                <h3>Vitals Monitoring</h3>
+                <div class="vitals-grid">
+                    <div class="vital-item">
+                        <i class="fas fa-heartbeat"></i>
+                        <h4>Heart Rate</h4>
+                        <p><strong>85</strong> bpm</p>
+                    </div>
+                    <div class="vital-item">
+                        <i class="fas fa-tint"></i>
+                        <h4>Blood Sugar</h4>
+                        <p><strong>110</strong> mg/dL</p>
+                    </div>
+                    <div class="vital-item">
+                        <i class="fas fa-temperature-low"></i>
+                        <h4>Temperature</h4>
+                        <p><strong>98.6</strong> °F</p>
+                    </div>
+                    <div class="vital-item">
+                        <i class="fas fa-hand-holding-water"></i>
+                        <h4>Hydration</h4>
+                        <p><strong>80</strong>%</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card reminders-card">
+                <h3>Daily Reminders</h3>
+                <ul>
+                    <li><i class="fas fa-pills"></i> Take morning medication (8:00 AM)</li>
+                    <li><i class="fas fa-utensils"></i> Log meal consumption</li>
+                    <li><i class="fas fa-bed"></i> Try to sleep before 10:30 PM</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="right-column">
+            
+            <div class="card bmi-card">
+                <h3>BMI Calculator</h3>
+                <div class="input-group">
+                    <label for="height">Height (cm):</label>
+                    <input type="number" id="height" placeholder="e.g., 175">
+                </div>
+                <div class="input-group">
+                    <label for="weight">Weight (kg):</label>
+                    <input type="number" id="weight" placeholder="e.g., 70">
+                </div>
+                <button class="calculate-btn">Calculate BMI</button>
+                <div id="bmi-result"></div>
+            </div>
+            
+            <div class="card connect-card">
+                <h3>Connect with a Doctor</h3>
+                <div class="doctor-profile">
+                    <img src="doctor.png" alt="Dr. Haqqif Ahmed"> 
+                    <div class="doctor-info">
+                        <h4>Dr. Haqqif Ahmed</h4>
+                        <p>General Physician</p>
+                        <small>11 am - 5 pm</small>
+                    </div>
+                    <button class="book-now-btn">Book Now</button>
+                </div>
+            </div>
+
+            <div class="card services-card">
+                <h3>Nearby Services</h3>
+                <div class="service-item">
+                    <i class="fas fa-prescription-bottle-alt"></i>
+                    <div>
+                        <h4>Pharmacies</h4>
+                        <small>Bull Temple Road</small>
+                    </div>
+                </div>
+                <div class="service-item">
+                    <i class="fas fa-clinic-medical"></i>
+                    <div>
+                        <h4>Clinics</h4>
+                        <small>Ashok Nagar</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button class="sos-button">SOS</button>
+
+    <script src="patient.js"></script> 
+</body>
+</html>

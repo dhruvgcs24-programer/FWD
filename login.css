@@ -1,0 +1,198 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+:root {
+    --hospital-blue: #007bff;
+    --patient-teal: #1abc9c;
+    --background-light: #f4f7f6;
+    --text-dark: #333;
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-strong: rgba(0, 0, 0, 0.2);
+}
+
+body {
+    background-color: var(--background-light);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: var(--text-dark);
+}
+
+/* WRAPPER FOR CENTERING */
+.auth-wrapper {
+    width: 100%;
+    max-width: 450px;
+}
+
+.main-title {
+    text-align: center;
+    color: var(--hospital-blue);
+    margin-bottom: 30px;
+    font-size: 2em;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* FORM/CHOICE CONTAINER STYLING */
+.form-container, #choice-container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px; /* Increased radius */
+    box-shadow: 0 8px 30px var(--shadow-light); /* Softer, larger shadow */
+    transition: all 0.4s ease-in-out;
+}
+
+.auth-form h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+/* ROLE CHOICE STYLING */
+.role-choice {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.role-btn {
+    padding: 15px 20px;
+    font-size: 1.1em;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid;
+    text-align: center;
+}
+
+.role-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px var(--shadow-light);
+}
+
+.patient-btn {
+    color: white;
+    background-color: var(--patient-teal);
+    border-color: var(--patient-teal);
+}
+
+.patient-btn:hover {
+    background-color: #16a085;
+    border-color: #16a085;
+}
+
+.hospital-btn {
+    color: white;
+    background-color: var(--hospital-blue);
+    border-color: var(--hospital-blue);
+}
+
+.hospital-btn:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* BACK BUTTON STYLING (Light border button) */
+.back-btn {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background: transparent;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: 1px solid #ccc;
+    color: var(--text-dark);
+}
+
+.back-btn:hover {
+    background-color: #f0f0f0;
+}
+
+
+/* INPUT GROUP STYLING */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Slightly more rounded */
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--hospital-blue);
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* SUBMIT BUTTON STYLING */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit-btn.hospital-btn {
+    background-color: var(--hospital-blue);
+}
+
+.submit-btn.hospital-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+.submit-btn.patient-btn {
+    background-color: var(--patient-teal);
+}
+
+.submit-btn.patient-btn:hover {
+    background-color: #16a085;
+    transform: translateY(-1px);
+}
+
+/* MEDIA QUERY for smaller devices */
+@media (max-width: 500px) {
+    .auth-wrapper {
+        padding: 0 10px;
+    }
+    .form-container, #choice-container {
+        padding: 20px;
+    }
+    .main-title {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+    .role-btn {
+        font-size: 1em;
+    }
+}
