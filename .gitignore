@@ -1,0 +1,10 @@
+# .gitignore file content
+
+# Environment file with secrets
+.env
+
+# Dependency folder for Node.js projects (usually very large)
+node_modules/
+
+# Mac OS specific file
+.DS_Store

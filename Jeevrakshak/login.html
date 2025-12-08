@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeevrakshak Login</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        // --- CONFIGURATION ---
+        const API_URL = 'http://localhost:3000/api'; // Assuming your server runs on port 3000
+        
+        function showForm(formId) {
+            // Hide all form/choice containers first
+            document.querySelectorAll('.form-container, #choice-container, #register-container, #patient-login-container').forEach(container => {
+                container.style.display = 'none';
+            });
+            // Show the requested container
+            document.getElementById(formId).style.display = 'block';
+
+            // Clear location data from local storage when switching forms/roles
+            localStorage.removeItem('patient_latitude');
+            localStorage.removeItem('patient_longitude');
+            
+            // Reset status elements
+            if (document.getElementById('patient-login-location-status')) {
+                document.getElementById('patient-login-location-status').textContent = 'Location not set.';
+            }
+            if (document.getElementById('patient-reg-location-status')) {
+                document.getElementById('patient-reg-location-status').textContent = 'Location not set.';
+            }
+        }
+
+        function redirectToDashboard(role, username, token) {
+            localStorage.setItem('auth_token', token);
+            if (role === 'patient') {
+                localStorage.setItem('current_patient_name', username);
+                window.location.href = 'patient.html';
+            } else if (role === 'hospital') {
+                localStorage.setItem('current_admin_id', username);
+                window.location.href = 'hospital.html';
+            }
+        }
+
+        // --- GEOLOCATION HELPER FUNCTIONS ---
+        // Function now accepts the ID of the status element to update
+        function getPatientLocation(statusId) {
+            const statusElement = document.getElementById(statusId);
+            
+            if (!statusElement) {
+                console.error(`Status element with ID ${statusId} not found.`);
+                return;
+            }
+
+            statusElement.innerHTML = 'Fetching location... <i class="fas fa-spinner fa-spin"></i>';
+            
+            if (!navigator.geolocation) {
+                statusElement.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#e74c3c;"></i> Geolocation is not supported by your browser.';
+                // Provide a manual option for simulation if Geolocation is not supported
+                if (confirm("Geolocation not supported. Use simulated location (12.9716, 77.5946)?")) {
+                    localStorage.setItem('patient_latitude', 12.9716);
+                    localStorage.setItem('patient_longitude', 77.5946);
+                    statusElement.innerHTML = `<i class="fas fa-check-circle" style="color:#f39c12;"></i> Simulated Location set! (12.9716, 77.5946)`;
+                }
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    // Store location in localStorage for use by patient.js
+                    localStorage.setItem('patient_latitude', lat);
+                    localStorage.setItem('patient_longitude', lng);
+                    
+                    statusElement.innerHTML = `<i class="fas fa-check-circle" style="color:#2ecc71;"></i> Location set! (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+                },
+                (error) => {
+                    // Check for common errors
+                    let errorMessage = 'Location access denied or failed.';
+                    if (error.code === error.PERMISSION_DENIED) {
+                        errorMessage = 'Permission Denied. Please enable location services for this browser/site.';
+                    } else if (error.code === error.POSITION_UNAVAILABLE) {
+                        errorMessage = 'Position unavailable. Check your connection or signal.';
+                    }
+                    
+                    statusElement.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e74c3c;"></i> ${errorMessage}`;
+                    console.error("Geolocation Error:", error);
+                    
+                    // Offer a simulation fallback if the real one fails
+                    if (confirm("Location access failed. Would you like to set a simulated location for testing (12.9716, 77.5946)?")) {
+                        localStorage.setItem('patient_latitude', 12.9716);
+                        localStorage.setItem('patient_longitude', 77.5946);
+                        document.getElementById(statusId).innerHTML = `<i class="fas fa-check-circle" style="color:#f39c12;"></i> Simulated Location set! (12.9716, 77.5946)`;
+                    }
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        }
+
+        // --- HANDLER FUNCTIONS ---
+
+        // 1. Patient Registration Handler
+        async function handlePatientRegister(event) {
+            event.preventDefault(); 
+            const username = document.getElementById('patient-reg-name').value.trim();
+            const password = document.getElementById('patient-reg-password').value;
+            const lat = localStorage.getItem('patient_latitude');
+            const lng = localStorage.getItem('patient_longitude');
+
+            if (!lat || !lng) {
+                 alert('Please click "Get My Location" before signing up.');
+                 return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/register/patient`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username,
+                        password,
+                        location: { lat: parseFloat(lat), lng: parseFloat(lng) }
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert(`Registration successful! Welcome, ${data.username}.`);
+                    redirectToDashboard('patient', data.username, data.token);
+                } else {
+                    alert(`Registration failed: ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Registration Error:', error);
+                alert('A network error occurred during registration.');
+            }
+        }
+
+
+        // 2. Patient Login Handler
+        async function handlePatientLogin(event) {
+            event.preventDefault(); 
+            const username = document.getElementById('patient-login-name').value.trim();
+            const password = document.getElementById('patient-login-password').value;
+            
+            // Patient location is optionally updated on login, but we check if it was previously set
+            const lat = localStorage.getItem('patient_latitude');
+            const lng = localStorage.getItem('patient_longitude');
+            
+            const loginBody = { username, password, role: 'patient' };
+            if (lat && lng) {
+                loginBody.location = { lat: parseFloat(lat), lng: parseFloat(lng) };
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(loginBody)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    redirectToDashboard('patient', data.username, data.token);
+                } else {
+                    alert(`Login failed: ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Login Error:', error);
+                alert('A network error occurred during login.');
+            }
+        }
+
+        // 3. Hospital Login Handler
+        async function handleHospitalLogin(event) {
+            event.preventDefault(); 
+            const username = document.getElementById('hospital-login-id').value.trim();
+            const password = document.getElementById('hospital-login-password').value;
+            const lat = document.getElementById('hospital-latitude').value;
+            const lng = document.getElementById('hospital-longitude').value;
+            
+            const loginBody = { 
+                username, 
+                password, 
+                role: 'hospital',
+                location: { lat: parseFloat(lat), lng: parseFloat(lng) }
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(loginBody)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store Hospital Location for back-end Admission routing
+                    localStorage.setItem('hospital_latitude', lat);
+                    localStorage.setItem('hospital_longitude', lng);
+                    
+                    redirectToDashboard('hospital', data.username, data.token);
+                } else {
+                    alert(`Login failed: ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Hospital Login Error:', error);
+                alert('A network error occurred during hospital login.');
+            }
+        }
+
+    </script>
+</head>
+
+<body onload="showForm('choice-container')">
+
+    <div class="auth-wrapper">
+        <h1 class="main-title"><i class="fas fa-heartbeat"></i> Jeevrakshak</h1>
+
+        <div id="choice-container" class="form-container">
+            <h2>Select Your Role</h2>
+            <button class="submit-btn patient-btn" onclick="showForm('patient-login-container')">
+                <i class="fas fa-user-injured"></i> Patient
+            </button>
+            <button class="submit-btn hospital-btn" onclick="showForm('hospital-login-container')">
+                <i class="fas fa-hospital-user"></i> Hospital Staff
+            </button>
+        </div>
+        
+        <div id="patient-login-container" class="form-container" style="display: none;">
+            <form class="auth-form" onsubmit="handlePatientLogin(event); return false;">
+                <h2>Patient Login 🧘‍♂️</h2>
+                <div class="input-group">
+                    <label for="patient-login-name">Username:</label>
+                    <input type="text" id="patient-login-name" required placeholder="Enter your registered username">
+                </div>
+                <div class="input-group">
+                    <label for="patient-login-password">Password:</label>
+                    <input type="password" id="patient-login-password" required placeholder="Enter your password">
+                </div>
+                <button type="button" class="geo-btn" onclick="getPatientLocation('patient-login-location-status')">
+                    <i class="fas fa-map-marker-alt"></i> Get My Location
+                </button>
+                <p id="patient-login-location-status" class="status-text">Location not set.</p>
+
+                <button type="submit" class="submit-btn patient-btn" style="margin-top: 20px;">Log In</button>
+                <button type="button" class="back-btn" onclick="showForm('choice-container')">← Back to Role Select</button>
+                <p class="form-note">New User? <a href="#" onclick="showForm('register-container'); return false;">Sign Up Here</a></p>
+            </form>
+        </div>
+        
+        <div id="register-container" class="form-container" style="display: none;">
+            <form class="auth-form" onsubmit="handlePatientRegister(event); return false;">
+                <h2>Patient Sign Up 📝</h2>
+                <div class="input-group">
+                    <label for="patient-reg-name">Choose Username:</label>
+                    <input type="text" id="patient-reg-name" required placeholder="e.g., myhealth_user">
+                </div>
+                <div class="input-group">
+                    <label for="patient-reg-password">Choose Password:</label>
+                    <input type="password" id="patient-reg-password" required placeholder="Must be secure">
+                </div>
+                <button type="button" class="geo-btn" onclick="getPatientLocation('patient-reg-location-status')">
+                    <i class="fas fa-map-marker-alt"></i> Get My Location (Required)
+                </button>
+                <p id="patient-reg-location-status" class="status-text">Location not set.</p>
+                
+                <button type="submit" class="submit-btn patient-btn" style="margin-top: 20px;">Sign Up</button>
+                <button type="button" class="back-btn" onclick="showForm('patient-login-container')">← Back to Login</button>
+            </form>
+        </div>
+
+
+        <div id="hospital-login-container" class="form-container" style="display: none;">
+            <form class="auth-form" onsubmit="handleHospitalLogin(event); return false;">
+                <h2>Hospital Staff Login ⚕️</h2>
+                <div class="input-group">
+                    <label for="hospital-login-id">Staff/Admin ID (Username):</label>
+                    <input type="text" id="hospital-login-id" required value="HospitalAdmin" placeholder="e.g., HospitalAdmin">
+                </div>
+                <div class="input-group">
+                    <label for="hospital-login-password">Password:</label>
+                    <input type="password" id="hospital-login-password" required value="admin123" placeholder="Enter password">
+                </div>
+                <div class="input-group">
+                    <label for="hospital-latitude">Hospital Latitude:</label>
+                    <input type="text" id="hospital-latitude" value="12.9716" required placeholder="e.g., 12.9716 (Bengaluru)">
+                </div>
+                <div class="input-group">
+                    <label for="hospital-longitude">Hospital Longitude:</label>
+                    <input type="text" id="hospital-longitude" value="77.5946" required placeholder="e.g., 77.5946 (Bengaluru)">
+                </div>
+                <button type="submit" class="submit-btn hospital-btn">Log In</button>
+                <button type="button" class="back-btn" onclick="showForm('choice-container')">← Back to Role Select</button>
+            </form>
+        </div>
+        
+    </div>
+
+</body>
+
+</html>
