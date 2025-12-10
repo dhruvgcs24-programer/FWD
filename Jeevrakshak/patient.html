@@ -1,183 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeevrakshak Dashboard</title>
-    <link rel="stylesheet" href="patient.css"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Jeevrakshak Patient Portal</title>
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="patient.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+
+<body class="patient-body">
 
     <header class="header">
-        <div class="logo">
-           <h1> <i class="fas fa-heartbeat"></i> Jeevrakshak</h1>
-        </div>
-        <nav class="nav-links">
-            <a href="#" class="active">Dashboard</a>
-            <a href="#">Prescriptions</a>
-            <a href="#">Records</a>
-            <a href="#">Support</a>
-        </nav>
-        <div class="user-profile">
-            <i class="fas fa-user-circle"></i> 
-             <a href="#" id="logout-patient-btn">Logout</a>
+        <div class="header-inner">
+            <div class="logo">
+                <h1><i class="fas fa-heartbeat"></i> JEEV<span class="highlight">RAKSHAK</span></h1>
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="#"><i class="fas fa-file-prescription"></i> Prescriptions</a>
+                <a href="#"><i class="fas fa-file-medical"></i> Records</a>
+            </nav>
+            <div class="user-profile">
+                <div class="profile-info">
+                    <span class="welcome-text">Welcome Back</span>
+                </div>
+                <div class="avatar-circle"><i class="fas fa-user"></i></div>
+                <a href="#" id="logout-patient-btn" class="logout-icon-btn"><i class="fas fa-sign-out-alt"></i></a>
+            </div>
         </div>
     </header>
 
     <main class="dashboard-container">
-        
-        <section class="left-column">
-            
-            <div class="card progress-card">
-                <h3>Today's Wellness <i class="fas fa-chart-pie"></i></h3>
-                
-                <div class="progress-layout-wrapper">
-                    <div class="circle-container">
-                        <div class="progress-circle">
-                            <div class="circle-inner">
-                                <span class="progress-value" id="overall-progress-value">0%</span>
-                                <span class="activity-label">Health Score</span>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Full width grid -->
+        <div class="dashboard-grid">
 
-                    <div class="stats-container">
-                        <div class="stat-item">
-                            <div class="stat-header">
-                                <span class="stat-label"><i class="fas fa-shoe-prints"></i> Steps</span>
-                                <span class="stat-numbers"><span id="steps-current">0</span> / <span id="steps-target">10000</span></span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-fill steps-color" id="steps-progress" style="width: 0%;"></div>
+            <section class="left-column">
+
+                <div class="card progress-card glass-panel">
+                    <h3>Today's Wellness</h3>
+
+                    <div class="progress-layout-wrapper">
+                        <!-- Circular Progress -->
+                        <div class="circle-container">
+                            <div class="progress-circle">
+                                <div class="circle-inner">
+                                    <span class="progress-value" id="overall-progress-value">0%</span>
+                                    <span class="activity-label">Daily Goal</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="stat-item">
-                            <div class="stat-header">
-                                <span class="stat-label"><i class="fas fa-tint"></i> Water (L)</span>
-                                <span class="stat-numbers"><span id="water-current">0</span> / <span id="water-target">8</span></span>
+                        <!-- Stacked Bars -->
+                        <div class="stats-container">
+                            <div class="stat-item">
+                                <div class="stat-header">
+                                    <span class="stat-label"><i class="fas fa-shoe-prints icon-step"></i> Steps</span>
+                                    <span class="stat-numbers"><span id="steps-current">0</span> / <span
+                                            id="steps-target">10000</span></span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill steps-color" id="steps-progress" style="width: 0%;"></div>
+                                </div>
                             </div>
-                            <div class="progress-track">
-                                <div class="progress-fill water-color" id="water-progress" style="width: 0%;"></div>
-                            </div>
-                        </div>
 
-                        <div class="stat-item">
-                            <div class="stat-header">
-                                <span class="stat-label"><i class="fas fa-bed"></i> Sleep (Hrs)</span>
-                                <span class="stat-numbers"><span id="sleep-current">0</span> / <span id="sleep-target">8</span></span>
+                            <div class="stat-item">
+                                <div class="stat-header">
+                                    <span class="stat-label"><i class="fas fa-tint icon-water"></i> Water</span>
+                                    <span class="stat-numbers"><span id="water-current">0</span> / <span
+                                            id="water-target">8</span>L</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill water-color" id="water-progress" style="width: 0%;"></div>
+                                </div>
                             </div>
-                            <div class="progress-track">
-                                <div class="progress-fill sleep-color" id="sleep-progress" style="width: 0%;"></div>
+
+                            <div class="stat-item">
+                                <div class="stat-header">
+                                    <span class="stat-label"><i class="fas fa-bed icon-sleep"></i> Sleep</span>
+                                    <span class="stat-numbers"><span id="sleep-current">0</span> / <span
+                                            id="sleep-target">8</span>H</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill sleep-color" id="sleep-progress" style="width: 0%;"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card goal-tracker">
-                <h3><i class="fas fa-sliders-h"></i> Update Activity</h3>
-                <form id="goal-update-form" class="goal-update-form">
-                    <div class="form-grid">
+                <div class="card goal-tracker glass-panel">
+                    <h3><i class="fas fa-edit"></i> Log Activity</h3>
+                    <form id="goal-update-form" class="goal-update-form">
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label for="steps-input">Steps (+)</label>
+                                <input type="number" id="steps-input" min="0" placeholder="e.g. 500">
+                            </div>
+                            <div class="input-group">
+                                <label for="water-input">Water (L)</label>
+                                <input type="number" id="water-input" min="0" step="0.1" placeholder="e.g. 0.5">
+                            </div>
+                            <div class="input-group">
+                                <label for="sleep-input">Sleep (Hr)</label>
+                                <input type="number" id="sleep-input" min="0" step="0.5" placeholder="e.g. 7">
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-goal-btn">Update Progress</button>
+                    </form>
+                </div>
+
+                <div class="card services-card glass-panel">
+                    <h3><i class="fas fa-map-marked-alt"></i> Nearby Services</h3>
+                    <div class="services-grid">
+                        <div class="service-item">
+                            <div class="icon-box pharmacy-bg"><i class="fas fa-pills"></i></div>
+                            <div class="service-info">
+                                <h4>Pharmacies</h4>
+                                <small>Apollo Pharmacy (0.5km)</small>
+                            </div>
+                            <button class="nav-btn"><i class="fas fa-location-arrow"></i></button>
+                        </div>
+                        <div class="service-item">
+                            <div class="icon-box clinic-bg"><i class="fas fa-user-md"></i></div>
+                            <div class="service-info">
+                                <h4>Clinics</h4>
+                                <small>City Care Clinic (1.2km)</small>
+                            </div>
+                            <button class="nav-btn"><i class="fas fa-location-arrow"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="right-column">
+
+                <div class="card bmi-card glass-panel">
+                    <h3>BMI Calculator</h3>
+                    <div class="bmi-inputs">
                         <div class="input-group">
-                            <label for="steps-input">Steps Taken</label>
-                            <input type="number" id="steps-input" min="0">
+                            <label>Weight (kg)</label>
+                            <input type="number" id="weight-input" placeholder="70">
                         </div>
                         <div class="input-group">
-                            <label for="water-input">Water Drunk (L)</label>
-                            <input type="number" id="water-input" min="0" step="0.1">
-                        </div>
-                        <div class="input-group">
-                            <label for="sleep-input">Hours Slept</label>
-                            <input type="number" id="sleep-input" min="0" step="0.5">
+                            <label>Height (cm)</label>
+                            <input type="number" id="height-input" placeholder="175">
                         </div>
                     </div>
-                    <button type="submit" class="submit-goal-btn">Save Progress</button>
-                </form>
-            </div>
+                    <button class="calculate-btn">Calculate BMI</button>
+                    <div id="bmi-result" class="bmi-output"></div>
+                </div>
 
-            <div class="card services-card">
-                <h3><i class="fas fa-map-marker-alt"></i> Nearby Services</h3>
-                <div class="services-grid">
-                    <div class="service-item">
-                        <div class="icon-box pharmacy-bg"><i class="fas fa-prescription-bottle-alt"></i></div>
-                        <div>
-                            <h4>Pharmacies</h4>
-                            <small>Apollo Pharmacy (0.5km)</small>
+                <div class="card connect-card glass-panel">
+                    <h3>Doctor on Call</h3>
+                    <div class="doctor-profile">
+                        <div class="doctor-img-wrapper">
+                            <img src="https://img.freepik.com/free-photo/doctor-with-his-arms-crossed-white-background_1368-5790.jpg"
+                                alt="Dr. Haqqif Ahmed">
+                            <span class="status-indicator"></span>
+                        </div>
+                        <div class="doctor-info">
+                            <h4>Dr. Haqqif Ahmed</h4>
+                            <p class="specialty">General Physician</p>
+                            <div class="availability"><i class="fas fa-check-circle"></i> Available Now</div>
                         </div>
                     </div>
-                    <div class="service-item">
-                        <div class="icon-box clinic-bg"><i class="fas fa-clinic-medical"></i></div>
-                        <div>
-                            <h4>Clinics</h4>
-                            <small>City Care Clinic (1.2km)</small>
-                        </div>
-                    </div>
+                    <button class="book-now-btn">Request Consultation</button>
+                    <p class="form-note"><i class="fas fa-info-circle"></i> Alerts nearest hospital with your location.
+                    </p>
                 </div>
-            </div>
-        </section>
 
-        <section class="right-column">
-            
-            <div class="card bmi-card">
-                <h3>BMI Calculator</h3>
-                <div class="input-group">
-                    <label>Weight (kg)</label>
-                    <input type="number" id="weight-input" placeholder="70">
-                </div>
-                <div class="input-group">
-                    <label>Height (cm)</label>
-                    <input type="number" id="height-input" placeholder="175">
-                </div>
-                <button class="calculate-btn">Check BMI</button>
-                <div id="bmi-result"></div>
-            </div>
-            
-            <div class="card connect-card">
-                <h3>Doctor on Call</h3>
-                <div class="doctor-profile">
-                    <div class="doctor-img-wrapper">
-                        <img src="https://img.freepik.com/free-photo/doctor-with-his-arms-crossed-white-background_1368-5790.jpg" alt="Dr. Haqqif Ahmed"> 
-                        <span class="status-indicator"></span>
-                    </div>
-                    <div class="doctor-info">
-                        <h4>Dr. Haqqif Ahmed</h4>
-                        <p class="specialty">General Physician</p>
-                        <div class="availability"><i class="far fa-clock"></i> Available Now</div>
-                    </div>
-                </div>
-                <button class="book-now-btn">Request Consultation</button> 
-                <p class="form-note"><i class="fas fa-info-circle"></i> Alerts nearest hospital with location.</p>
-            </div>
-
-        </section>
+            </section>
+        </div>
     </main>
 
+    <!-- Floating Action Button -->
     <button class="sos-button">
-        <span>SOS</span>
+        <span class="sos-text">SOS</span>
         <div class="pulse-ring"></div>
     </button>
-    
+
+    <!-- Doctor Modal -->
     <div id="doctor-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content glass-panel">
             <span class="close-btn">&times;</span>
             <div class="modal-header">
-                <i class="fas fa-user-md modal-icon"></i>
-                <h4>Request a Consultation</h4>
+                <div class="modal-icon-box"><i class="fas fa-user-md"></i></div>
+                <h4>Request Consultation</h4>
             </div>
             <form id="doctor-request-form">
                 <div class="input-group">
-                    <label for="issue-input">Briefly describe your issue:</label>
-                    <textarea id="issue-input" rows="3" required></textarea>
+                    <label for="issue-input">Describe symptoms</label>
+                    <textarea id="issue-input" rows="3" required placeholder="How are you feeling?"></textarea>
                 </div>
                 <div class="input-group">
-                    <label for="criticality-select">Select Criticality Level:</label>
+                    <label for="criticality-select">Urgency Level</label>
                     <select id="criticality-select" required>
-                        <option value="LOW">LOW (Routine check-up)</option>
-                        <option value="MEDIUM">MEDIUM (Non-emergency symptom)</option>
-                        <option value="HIGH">HIGH (Urgent need for doctor)</option>
+                        <option value="LOW">Low - Routine Checkup</option>
+                        <option value="MEDIUM">Medium - Discomfort</option>
+                        <option value="HIGH">High - Urgent</option>
                     </select>
                 </div>
                 <button type="submit" class="submit-request-btn">Send Request</button>
@@ -185,33 +212,41 @@
         </div>
     </div>
 
+    <!-- SOS Modal -->
     <div id="sos-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content glass-panel danger-theme">
             <span class="close-btn">&times;</span>
-            
+
             <div id="sos-confirm-step">
-                <div class="modal-header">
-                    <i class="fas fa-exclamation-triangle modal-icon danger-icon"></i>
-                    <h4>🚨 Immediate Emergency Call</h4>
+                <div class="modal-header center-col">
+                    <i class="fas fa-ambulance modal-icon-big danger-icon"></i>
+                    <h4>Emergency SOS</h4>
                 </div>
-                <p class="warning-text">Are you **absolutely sure** you want to send an **SOS** signal to the nearest hospital?</p>
-                <input type="text" id="sos-reason-input" placeholder="e.g., Severe Chest Pain (Optional)">
-                <button id="confirm-sos-btn" class="submit-request-btn sos-confirm-btn">Yes, CONFIRM SOS</button>
-                <button id="cancel-sos-btn" class="cancel-btn">Cancel</button>
+                <div class="warning-box">
+                    <p>Are you sure you want to alert the nearest hospital?</p>
+                </div>
+                <input type="text" id="sos-reason-input" class="danger-input"
+                    placeholder="Reason (Optional, e.g. Chest Pain)">
+                <div class="modal-actions">
+                    <button id="confirm-sos-btn" class="submit-request-btn sos-confirm-btn">CONFIRM ALERT</button>
+                    <button id="cancel-sos-btn" class="cancel-btn">Cancel</button>
+                </div>
             </div>
-            
+
             <div id="request-status-step" style="display: none;">
-                <div class="modal-header">
-                    <i id="status-icon" class="modal-icon"></i>
+                <div class="status-content center-col">
+                    <div class="success-icon-anim"><i id="status-icon" class="fas fa-check-circle"></i></div>
                     <h4 id="status-title">Request Sent!</h4>
+                    <p id="status-message">Help is on the way.</p>
+                    <button class="submit-request-btn"
+                        onclick="document.getElementById('sos-modal').style.display='none'">Return to Dashboard</button>
                 </div>
-                <p id="status-message"></p>
-                <button class="submit-request-btn" onclick="document.getElementById('sos-modal').style.display='none'">Close Dashboard</button>
             </div>
         </div>
     </div>
 
 
-    <script src="patient.js"></script> 
+    <script src="patient.js"></script>
 </body>
+
 </html>

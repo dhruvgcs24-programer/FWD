@@ -3,12 +3,12 @@
 // --- Global Configuration ---
 const API_URL = 'http://localhost:3000/api';
 // Temporarily set default for testing if check is commented out
-const patientName = localStorage.getItem('current_patient_name') || 'Test Patient'; 
+const patientName = localStorage.getItem('current_patient_name') || 'Test Patient';
 const authToken = localStorage.getItem('auth_token');
 
 // Redirect if not logged in
 if (!localStorage.getItem('current_patient_name') || !authToken) {
-     redirectToLogin("Please log in.");
+    redirectToLogin("Please log in.");
 }
 
 // --- GOAL TRACKER CONFIGURATION ---
@@ -52,21 +52,21 @@ function redirectToLogin(message = "Session expired. Please log in again.") {
 async function fetchGoals(name) {
     try {
         const response = await fetch(`${API_URL}/goals/${encodeURIComponent(name)}`, { headers: getAuthHeaders() });
-        
+
         if (response.status === 404) {
             return DEFAULT_GOALS;
         }
 
         if (response.status === 401 || response.status === 403) {
-             redirectToLogin("Session expired. Please log in again.");
-             return DEFAULT_GOALS;
+            redirectToLogin("Session expired. Please log in again.");
+            return DEFAULT_GOALS;
         }
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
-        return await response.json(); 
+
+        return await response.json();
     } catch (error) {
         console.error('Error fetching patient goals:', error);
         return DEFAULT_GOALS;
@@ -118,7 +118,7 @@ function calculateOverallProgress(goals) {
 
 async function renderProgress() {
     const goals = await fetchGoals(patientName);
-    
+
     const overallProgress = calculateOverallProgress(goals);
     document.getElementById('overall-progress-value').textContent = `${overallProgress}%`;
     document.querySelector('.progress-circle').style.setProperty('--progress-degree', `${overallProgress * 3.6}deg`);
@@ -126,7 +126,7 @@ async function renderProgress() {
     document.getElementById('steps-progress').style.width = `${calculateProgress(goals.steps, GOAL_TARGETS.steps)}%`;
     document.getElementById('steps-current').textContent = goals.steps;
     document.getElementById('steps-target').textContent = GOAL_TARGETS.steps;
-    
+
     document.getElementById('water-progress').style.width = `${calculateProgress(goals.water, GOAL_TARGETS.water)}%`;
     document.getElementById('water-current').textContent = goals.water;
     document.getElementById('water-target').textContent = GOAL_TARGETS.water;
@@ -144,8 +144,8 @@ async function renderProgress() {
 // --- BUTTON HANDLERS (UNCHANGED) ---
 
 async function handleGoalUpdate(event) {
-    event.preventDefault(); 
-    
+    event.preventDefault();
+
     const steps = parseInt(document.getElementById('steps-input').value) || 0;
     const water = parseFloat(document.getElementById('water-input').value) || 0;
     const sleep = parseFloat(document.getElementById('sleep-input').value) || 0;
@@ -153,11 +153,11 @@ async function handleGoalUpdate(event) {
     const newGoals = { steps, water, sleep };
 
     const success = await updateGoalsAPI(newGoals);
-    
+
     if (success) {
         // Use alert temporarily, ideally use a small custom toast message here too
-        alert("Goals updated successfully and saved to the server!"); 
-        renderProgress(); 
+        alert("Goals updated successfully and saved to the server!");
+        renderProgress();
     }
 }
 
@@ -198,65 +198,118 @@ function handleBmiCalculation() {
 
 // 3. Central Request Handler for Doctor Connect and SOS
 async function sendRequest(reason, criticality, type) {
-    const patientLat = localStorage.getItem('patient_latitude');
-    const patientLng = localStorage.getItem('patient_longitude');
-    
     const modalToUpdate = (type === 'SOS' ? sosModal : doctorModal);
-    
-    if (!patientLat || !patientLng) {
-        alert("Error: Your location was not set during login. Cannot send request.");
-        modalToUpdate.style.display = 'none'; // Close modal if open
-        return;
-    }
-    
     const endpoint = type === 'SOS' ? '/sos-request' : '/doctor-request';
-    const requestData = {
-        patientName: patientName,
-        reason: reason,
-        criticality: criticality.toUpperCase(),
-        location: {
-            lat: parseFloat(patientLat),
-            lng: parseFloat(patientLng)
+
+    // Debug Logging
+    console.log(`[sendRequest] Initiating ${type} request...`);
+
+    // Helper to proceed with request once location is known
+    const executeFetch = async (lat, lng) => {
+        console.log(`[sendRequest] Location obtained: ${lat}, ${lng}`);
+
+        const requestData = {
+            patientName: patientName,
+            reason: reason,
+            criticality: criticality.toUpperCase(),
+            type: type, // Ensure this matches what hospital.js expects (UPPERCASE usually safe)
+            timestamp: new Date().toISOString(), // Ensure timestamp is sent client-side if server doesn't add it
+            location: {
+                lat: parseFloat(lat),
+                lng: parseFloat(lng)
+            }
+        };
+
+        console.log(`[sendRequest] Payload:`, requestData);
+
+        try {
+            const response = await fetch(`${API_URL}${endpoint}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestData)
+            });
+
+            console.log(`[sendRequest] Response Status: ${response.status}`);
+            const result = await response.json();
+            console.log(`[sendRequest] Response Body:`, result);
+
+            const success = response.ok;
+
+            // POP-UP BOX UPDATE LOGIC
+            const statusTitle = document.getElementById('status-title');
+            const statusMessage = document.getElementById('status-message');
+            const requestStatusStep = document.getElementById('request-status-step');
+            const confirmStep = document.getElementById('sos-confirm-step');
+
+            if (type === 'SOS') {
+                confirmStep.style.display = 'none';
+                requestStatusStep.style.display = 'block';
+
+                if (success) {
+                    statusTitle.innerHTML = `<i class="fas fa-check-circle" style="color: var(--secondary);"></i> SOS Request Sent!`;
+                    statusMessage.innerHTML = `The nearest hospital (**${result.hospitalName || 'Central'}**) has been notified of your **HIGH** priority emergency. Arrival time: ~${result.distance ? result.distance.toFixed(2) : '2.5'} km.`;
+                } else {
+                    statusTitle.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i> SOS Failed`;
+                    statusMessage.innerHTML = `Request failed: ${result.message || 'Could not dispatch request.'} Please call emergency services directly.`;
+                }
+            } else { // DOCTOR_CONNECT
+                doctorModal.style.display = 'none';
+                alert(`Doctor Request Sent! The nearest hospital (${result.hospitalName || 'Central'} - ${result.distance ? result.distance.toFixed(2) : '2.5'} km) has been notified. Check your Prescription tab for updates.`);
+            }
+
+        } catch (error) {
+            console.error(`${type} Request Error:`, error);
+            alert(`A network error occurred: ${error.message}. Could not connect to the Jeevrakshak server.`);
+            modalToUpdate.style.display = 'none';
         }
     };
 
-    try {
-        const response = await fetch(`${API_URL}${endpoint}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify(requestData)
-        });
+    // Location Check & JIT Fetching
+    let patientLat = localStorage.getItem('patient_latitude');
+    let patientLng = localStorage.getItem('patient_longitude');
 
-        const result = await response.json();
-        const success = response.ok;
-        
-        // POP-UP BOX UPDATE LOGIC
-        const statusTitle = document.getElementById('status-title');
-        const statusMessage = document.getElementById('status-message');
-        const requestStatusStep = document.getElementById('request-status-step');
-        const confirmStep = document.getElementById('sos-confirm-step');
+    console.log(`[sendRequest] Stored Location: ${patientLat}, ${patientLng}`);
 
-        if (type === 'SOS') {
-            confirmStep.style.display = 'none';
-            requestStatusStep.style.display = 'block';
+    if (patientLat && patientLng && patientLat !== 'undefined' && patientLng !== 'undefined') {
+        // Location exists, proceed
+        await executeFetch(patientLat, patientLng);
+    } else {
+        // Location missing, attempt JIT fetch
+        // Location missing, attempt JIT fetch SILENTLY first (User Experience Improvement)
+        // console.warn("[sendRequest] Location missing from Storage. Attempting JIT fetch...");
 
-            if (success) {
-                statusTitle.innerHTML = `<i class="fas fa-check-circle" style="color: var(--secondary);"></i> SOS Request Sent!`;
-                statusMessage.innerHTML = `The nearest hospital (**${result.hospitalName}**) has been notified of your **HIGH** priority emergency. Arrival time: ~${result.distance.toFixed(2)} km.`;
-            } else {
-                statusTitle.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i> SOS Failed`;
-                statusMessage.innerHTML = `Request failed: ${result.message || 'Could not dispatch request.'} Please call emergency services directly.`;
-            }
-            // The modal remains open until the user clicks 'Close'
-        } else { // DOCTOR_CONNECT
-            doctorModal.style.display = 'none';
-            alert(`Doctor Request Sent! The nearest hospital (${result.hospitalName} - ${result.distance.toFixed(2)} km) has been notified. Check your Prescription tab for updates.`);
+        // Directly attempt fetch without pestering the user
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    console.log(`[sendRequest] JIT Location Success: ${lat}, ${lng}`);
+
+                    // Save for future use in this session
+                    localStorage.setItem('patient_latitude', lat);
+                    localStorage.setItem('patient_longitude', lng);
+
+                    executeFetch(lat, lng);
+                },
+                (error) => {
+                    console.error("JIT Geolocation Error:", error);
+                    let errMsg = "Unknown error";
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED: errMsg = "User denied request"; break;
+                        case error.POSITION_UNAVAILABLE: errMsg = "Location info unavailable"; break;
+                        case error.TIMEOUT: errMsg = "Request timed out"; break;
+                    }
+                    alert(`Could not fetch location: ${errMsg}. Please ensure GPS is on.`);
+                    modalToUpdate.style.display = 'none';
+                },
+                { enableHighAccuracy: false, timeout: 15000 } // Relaxed accuracy and increased timeout for better success rate
+            );
+        } else {
+            alert("Geolocation is not supported by your browser or disabled.");
+            modalToUpdate.style.display = 'none';
         }
-        
-    } catch (error) {
-        console.error(`${type} Request Error:`, error);
-        alert(`A network error occurred. Could not connect to the Jeevrakshak server for ${type} request.`);
-        modalToUpdate.style.display = 'none';
     }
 }
 
@@ -274,7 +327,7 @@ function handleSosButton() {
     document.getElementById('sos-confirm-step').style.display = 'block';
     document.getElementById('request-status-step').style.display = 'none';
     // Remove the 'required' attribute temporarily just in case
-    document.getElementById('sos-reason-input').removeAttribute('required'); 
+    document.getElementById('sos-reason-input').removeAttribute('required');
     document.getElementById('sos-reason-input').value = '';
     sosModal.style.display = 'block';
 }
@@ -310,9 +363,9 @@ doctorRequestForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const reason = document.getElementById('issue-input').value.trim();
     const criticality = document.getElementById('criticality-select').value;
-    
+
     if (reason && criticality) {
-        sendRequest(reason, criticality, 'DOCTOR_CONNECT'); 
+        sendRequest(reason, criticality, 'DOCTOR_CONNECT');
     } else {
         alert("Please describe your issue and select a criticality level.");
     }
@@ -321,14 +374,14 @@ doctorRequestForm.addEventListener('submit', (e) => {
 // SOS Confirmation Button - *** THIS IS THE MODIFIED PART ***
 confirmSosBtn.addEventListener('click', () => {
     let reason = document.getElementById('sos-reason-input').value.trim();
-    
+
     // If the user did not enter a reason, use a default, but DO NOT prevent the request.
     if (!reason) {
         reason = "Unspecified High Criticality Emergency (Quick Tap)";
     }
-    
+
     // Criticality is assumed HIGH for SOS
-    sendRequest(reason, 'HIGH', 'SOS'); 
+    sendRequest(reason, 'HIGH', 'SOS');
 });
 
 // SOS Cancel Button
@@ -339,15 +392,15 @@ cancelSosBtn.addEventListener('click', () => {
 
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
-    
-    renderProgress(); 
-    
+
+    renderProgress();
+
     // 1. Goal Update Form Button
     document.getElementById('goal-update-form').addEventListener('submit', handleGoalUpdate);
-    
+
     // 2. BMI Calculation Button
     document.querySelector('.calculate-btn').addEventListener('click', handleBmiCalculation);
-    
+
     // 3. Doctor Request/Book Now Button (Opens Modal)
     document.querySelector('.book-now-btn').addEventListener('click', handleDoctorRequest);
 
@@ -356,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. Logout Button
     document.getElementById('logout-patient-btn').addEventListener('click', handleLogout);
-    
+
     // 6. Patient Name Display (Header)
     const patientProfileDiv = document.querySelector('.user-profile');
     const logoutLink = document.getElementById('logout-patient-btn');

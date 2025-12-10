@@ -1,110 +1,293 @@
+/* --- MODERN LOGIN VARIABLES --- */
+:root {
+    --primary-blue: #3b82f6;
+    --primary-dark: #1d4ed8;
+    --secondary-teal: #14b8a6;
+    --secondary-dark: #0f766e;
+    --accent-red: #ef4444; 
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --radius-lg: 16px;
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-}
-
-:root {
-    --hospital-blue: #007bff;
-    --patient-teal: #1abc9c;
-    --background-light: #f4f7f6;
-    --text-dark: #333;
-    --shadow-light: rgba(0, 0, 0, 0.1);
-    --shadow-strong: rgba(0, 0, 0, 0.2);
 }
 
 body {
-    background-color: var(--background-light);
+    font-family: var(--font-body);
+    background: var(--bg-gradient);
+    min-height: 100vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    overflow: hidden; /* For shapes */
+    position: relative;
     padding: 20px;
-    color: var(--text-dark);
 }
 
-/* WRAPPER FOR CENTERING */
-.auth-wrapper {
+/* --- BACKGROUND SHAPES ANIMATION --- */
+.background-shapes {
+    position: absolute;
     width: 100%;
-    max-width: 450px;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.4;
+    filter: blur(80px);
+    animation: float 10s infinite ease-in-out;
+}
+
+.shape-1 {
+    width: 500px;
+    height: 500px;
+    background: var(--primary-blue);
+    top: -100px;
+    right: -100px;
+    animation-delay: 0s;
+}
+
+.shape-2 {
+    width: 400px;
+    height: 400px;
+    background: var(--secondary-teal);
+    bottom: -50px;
+    left: -50px;
+    animation-delay: 2s;
+}
+
+.shape-3 {
+    width: 300px;
+    height: 300px;
+    background: #8b5cf6;
+    bottom: 20%;
+    right: 20%;
+    opacity: 0.3;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+/* --- MAIN WRAPPER --- */
+.auth-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.app-header {
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .main-title {
-    text-align: center;
-    color: var(--hospital-blue);
-    margin-bottom: 30px;
-    font-size: 2em;
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    color: white;
+    margin-bottom: 5px;
+    letter-spacing: -0.5px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-/* FORM/CHOICE CONTAINER STYLING */
-.form-container, #choice-container {
-    background: white;
+.main-title i {
+    color: #ef4444;
+}
+
+.highlight {
+    color: var(--secondary-teal);
+    font-weight: 300;
+}
+
+.subtitle {
+    color: #cbd5e1;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+/* --- FORM CARD STYLING --- */
+.form-container {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--radius-lg);
     padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px var(--shadow-light);
-    transition: transform 0.3s ease-in-out;
+    box-shadow: var(--shadow-xl);
+    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.form-container h2, #choice-container h2 {
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    font-family: var(--font-heading);
+    color: var(--text-main);
+    font-size: 1.8rem;
+    font-weight: 700;
     text-align: center;
-    margin-bottom: 25px;
-    font-size: 1.5em;
-    color: var(--text-dark);
+    margin-bottom: 5px;
 }
 
-/* ROLE SELECTION BUTTONS */
-.role-selection {
+.form-subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+}
+
+/* --- ROLE SELECTION (CHOICE CONTAINER) --- */
+.role-grid {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
+    margin-top: 20px;
 }
 
-.role-btn {
-    padding: 15px;
-    font-size: 1.1em;
+.submit-btn {
+    width: 100%;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
     cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* Patient Button Style */
+.submit-btn.patient-btn {
+    background: white;
+    border: 1px solid #e2e8f0;
+}
+.submit-btn.patient-btn .icon-wrapper {
+    background: #e0f2fe;
+    color: var(--primary-blue);
+}
+.submit-btn.patient-btn .text-wrapper .role-title {
+    color: var(--text-main);
+}
+.submit-btn.patient-btn:hover {
+    border-color: var(--primary-blue);
+    background: #f8fafc;
+}
+/* Primary Action variant for inside forms */
+form .submit-btn.patient-btn {
+    background: var(--primary-blue);
+    justify-content: center;
     color: white;
-    font-weight: 600;
+}
+form .submit-btn.patient-btn:hover {
+    background: var(--primary-dark);
+}
+
+/* Hospital Button Style */
+.submit-btn.hospital-btn {
+    background: white;
+    border: 1px solid #e2e8f0;
+}
+.submit-btn.hospital-btn .icon-wrapper {
+    background: #dcfce7;
+    color: var(--secondary-dark);
+}
+.submit-btn.hospital-btn .text-wrapper .role-title {
+    color: var(--text-main);
+}
+.submit-btn.hospital-btn:hover {
+    border-color: var(--secondary-teal);
+    background: #f8fafc;
+}
+/* Hospital Login Action */
+form .submit-btn.hospital-btn {
+    background: var(--secondary-teal);
+    color: white;
+    justify-content: center;
+}
+form .submit-btn.hospital-btn:hover {
+    background: var(--secondary-dark);
+}
+
+
+/* Content inside buttons */
+.icon-wrapper {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    transition: background-color 0.3s, transform 0.2s;
+    font-size: 1.2rem;
+    transition: transform 0.3s;
 }
 
-.role-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+.submit-btn:hover .icon-wrapper {
+    transform: scale(1.1) rotate(5deg);
 }
 
-.role-btn.patient-btn {
-    background-color: var(--patient-teal);
-}
-
-.role-btn.patient-btn:hover {
-    background-color: #16a085;
-}
-
-.role-btn.hospital-btn {
-    background-color: var(--hospital-blue);
-}
-
-.role-btn.hospital-btn:hover {
-    background-color: #0056b3;
-}
-
-/* FORM STYLING */
-.auth-form {
+.text-wrapper {
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
+.role-title {
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.role-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.arrow-icon {
+    color: #cbd5e1;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.submit-btn:hover .arrow-icon {
+    transform: translateX(5px);
+    color: var(--primary-blue);
+}
+
+/* --- INPUT GROUPS --- */
 .input-group {
     margin-bottom: 20px;
 }
@@ -112,87 +295,154 @@ body {
 .input-group label {
     display: block;
     margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
-    font-size: 0.95em;
+    font-weight: 600;
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    color: #94a3b8;
+    font-size: 1rem;
+    transition: color 0.3s;
 }
 
 .input-group input {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px; /* Slightly more rounded */
-    font-size: 1em;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    padding: 14px 14px 14px 45px; /* Space for icon */
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: var(--text-main);
+    background: #f8fafc;
+    transition: all 0.3s;
+    font-family: var(--font-body);
 }
 
 .input-group input:focus {
-    border-color: var(--hospital-blue);
     outline: none;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    border-color: var(--primary-blue);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-/* SUBMIT BUTTON STYLING */
-.submit-btn {
-    width: 100%;
-    padding: 12px;
-    border: none;
+.input-group input:focus + .input-icon, 
+.input-group input:focus ~ .input-icon { /* Sibling selector fix */
+    color: var(--primary-blue);
+}
+.input-wrapper:focus-within .input-icon {
+    color: var(--primary-blue);
+}
+
+/* --- GEOLOCATION SECTION --- */
+.geo-section {
+    background: #f1f5f9;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.geo-btn {
+    background: transparent;
+    border: 1px dashed #94a3b8;
+    padding: 8px 16px;
     border-radius: 8px;
-    color: white;
-    font-size: 1.1em;
+    color: #64748b;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.geo-btn:hover {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+    background: #e0f2fe;
+}
+
+.status-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+.status-text i { margin-right: 5px; }
+
+/* --- HOSPITAL LAT/LNG ROWS --- */
+.coords-row {
+    display: flex;
+    gap: 15px;
+}
+.coords-row .input-group input {
+    padding-left: 14px; /* No icons for lat/lng */
+}
+
+/* --- FORM FOOTER (BACK BTN) --- */
+.form-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 25px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.back-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.submit-btn.hospital-btn {
-    background-color: var(--hospital-blue);
-}
-
-.submit-btn.hospital-btn:hover {
-    background-color: #0056b3;
-    transform: translateY(-1px);
-}
-
-.submit-btn.patient-btn {
-    background-color: var(--patient-teal);
-}
-
-.submit-btn.patient-btn:hover {
-    background-color: #16a085;
-    transform: translateY(-1px);
-}
-
-/* BACK BUTTON */
-.back-btn {
-    margin-top: 15px;
-    width: 100%;
-    padding: 10px;
-    background: #f0f0f0;
-    color: #666;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s, color 0.3s;
+    font-size: 0.95rem;
+    transition: color 0.3s;
 }
 
 .back-btn:hover {
-    background-color: #e0e0e0;
-    color: #333;
+    color: var(--text-main);
 }
 
-/* Mobile Adjustments */
-@media (max-width: 500px) {
-    .form-container, #choice-container {
+.form-note {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.form-note a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.form-note a:hover {
+    text-decoration: underline;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 480px) {
+    .auth-wrapper {
+        max-width: 100%;
+    }
+    .form-container {
         padding: 30px 20px;
     }
-
     .main-title {
-        font-size: 1.8em;
+        font-size: 2.2rem;
     }
-
-    .role-btn, .submit-btn {
-        padding: 12px;
+    .coords-row {
+        flex-direction: column;
+        gap: 0;
     }
 }

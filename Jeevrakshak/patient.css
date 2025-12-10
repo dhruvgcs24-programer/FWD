@@ -1,212 +1,238 @@
-/* --- Variables & Reset (Blue Theme) --- */
+/* --- PATIENT DASHBOARD VARIABLES --- */
 :root {
-    /* Blue Theme Variables */
-    --primary: #0984e3;       /* Sky Blue - Main Action/Accent */
-    --primary-dark: #0077c2;  /* Darker Blue for hover */
-    --secondary: #2ecc71;     /* Green (kept for success indicators) */
-    --accent: #fdcb6e;        /* Warning/Accent (Orange/Yellow) */
-    --danger: #ff7675;        /* Red/Error (for SOS/Logout) */
-    --dark-text: #2c3e50;     /* Dark Navy/Gray Text */
-    --light-text: #7f8c8d;    /* Muted Gray Text */
-    --bg-color: #f4f7f9;
-    --card-bg: #ffffff;
-    
-    --shadow: 0 10px 20px rgba(0,0,0,0.05);
-    --radius: 16px;
-    
-    /* Progress Bar Colors */
-    --steps-grad-start: #fdcb6e; 
-    --steps-grad-end: #fab1a0;
-    --water-grad-start: #74b9ff;
-    --water-grad-end: #0984e3;
-    --sleep-grad-start: #a29bfe;
-    --sleep-grad-end: #6c5ce7;
+    --primary-blue: #0ea5e9;
+    /* Sky Blue */
+    --primary-dark: #0284c7;
+    --success-green: #22c55e;
+    --accent-orange: #f97316;
+    --danger-red: #ef4444;
 
-    /* New Modal Specific Styles */
-    --modal-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    --bg-color: #f0f9ff;
+    --card-bg: #ffffff;
+    --text-primary: #0f172a;
+    --text-muted: #64748b;
+
+    --shadow-default: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --radius: 16px;
+
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
 }
 
-body {
+body.patient-body {
     background-color: var(--bg-color);
-    color: var(--dark-text);
+    font-family: var(--font-body);
+    color: var(--text-primary);
     min-height: 100vh;
+    padding-bottom: 80px;
+    /* Space for FAB */
+    display: flex;
+    flex-direction: column;
 }
 
-/* --- Header --- */
+/* --- HEADER --- */
 .header {
-    background: var(--card-bg);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    background: white;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    padding: 0 40px;
+    height: 80px;
     position: sticky;
     top: 0;
     z-index: 100;
 }
 
-.logo h1 {
-    font-size: 1.5rem;
-    color: var(--primary);
+.header-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+    height: 100%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
+}
+
+.logo h1 {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: var(--text-primary);
+}
+
+.highlight {
+    color: var(--primary-blue);
+    font-weight: 300;
 }
 
 .nav-links {
     display: flex;
-    gap: 30px;
+    gap: 40px;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: var(--light-text);
-    font-weight: 500;
-    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 600;
     transition: color 0.3s;
+    font-size: 1rem;
 }
 
-.nav-links a.active, .nav-links a:hover {
-    color: var(--primary);
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary-blue);
 }
 
 .user-profile {
     display: flex;
     align-items: center;
     gap: 15px;
-    font-weight: 600;
-    color: var(--dark-text);
 }
 
-#logout-patient-btn {
-    text-decoration: none;
-    color: var(--danger);
+.profile-info {
+    text-align: right;
+}
+
+.welcome-text {
     font-size: 0.9rem;
-    border: 1px solid rgba(255, 118, 117, 0.3);
-    padding: 5px 12px;
-    border-radius: 20px;
-    transition: all 0.3s;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
-#logout-patient-btn:hover {
-    background: var(--danger);
-    color: white;
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    background: #e0f2fe;
+    color: var(--primary-blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
 }
 
-/* --- Layout --- */
+.logout-icon-btn {
+    color: var(--danger-red);
+    font-size: 1.2rem;
+    margin-left: 10px;
+    transition: transform 0.2s;
+}
+
+.logout-icon-btn:hover {
+    transform: scale(1.1);
+}
+
+/* --- DASHBOARD LAYOUT --- */
 .dashboard-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 20px;
+    padding: 40px;
+    width: 100%;
+    flex: 1;
+}
+
+.dashboard-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 25px;
+    gap: 30px;
+    max-width: 1920px;
+    margin: 0 auto;
 }
 
-.left-column, .right-column {
+.left-column,
+.right-column {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 30px;
 }
 
-/* --- Card Commons --- */
-.card {
+/* --- CARDS --- */
+.glass-panel {
     background: var(--card-bg);
     border-radius: var(--radius);
-    padding: 25px;
-    box-shadow: var(--shadow);
-    transition: transform 0.2s;
-    border: 1px solid rgba(0,0,0,0.02);
+    padding: 30px;
+    box-shadow: var(--shadow-default);
+    border: 1px solid #eefffd;
+    transition: transform 0.3s;
+}
+
+.glass-panel:hover {
+    transform: translateY(-3px);
 }
 
 .card h3 {
-    color: var(--dark-text);
+    font-family: var(--font-heading);
     font-size: 1.2rem;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #eee;
+    margin-bottom: 25px;
+    color: var(--text-primary);
+    border-bottom: 1px solid #f1f5f9;
     padding-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .card h3 i {
-    color: var(--primary);
-    opacity: 0.8;
+    color: var(--primary-blue);
 }
 
-/* --- 1. Progress Card --- */
+/* Progress Card */
 .progress-layout-wrapper {
     display: flex;
-    align-items: center;
     gap: 40px;
+    align-items: center;
 }
 
-/* Circle */
 .circle-container {
     flex-shrink: 0;
 }
 
 .progress-circle {
-    width: 160px;
-    height: 160px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
-    background: conic-gradient(var(--primary) var(--progress-degree, 0deg), #dfe6e9 0deg);
-    box-shadow: 0 4px 15px rgba(9, 132, 227, 0.2); 
+    background: conic-gradient(var(--primary-blue) var(--progress-degree, 0deg), #f1f5f9 0deg);
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgba(14, 165, 233, 0.2);
 }
 
 .circle-inner {
-    width: 130px;
-    height: 130px;
+    width: 150px;
+    height: 150px;
     background: white;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
 .progress-value {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    color: var(--primary);
-    line-height: 1;
+    color: var(--primary-blue);
 }
 
 .activity-label {
-    font-size: 0.8rem;
-    color: var(--light-text);
-    margin-top: 5px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
 }
 
-/* Detailed Bars Side */
 .stats-container {
-    flex-grow: 1;
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 20px;
-}
-
-.stat-item {
-    width: 100%;
 }
 
 .stat-header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 8px;
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
 .stat-label i {
@@ -215,10 +241,21 @@ body {
     text-align: center;
 }
 
+.icon-step {
+    color: #f97316;
+}
+
+.icon-water {
+    color: #0ea5e9;
+}
+
+.icon-sleep {
+    color: #8b5cf6;
+}
+
 .progress-track {
-    width: 100%;
-    height: 10px;
-    background: #dfe6e9;
+    background: #f1f5f9;
+    height: 12px;
     border-radius: 10px;
     overflow: hidden;
 }
@@ -226,89 +263,155 @@ body {
 .progress-fill {
     height: 100%;
     border-radius: 10px;
-    transition: width 1s ease-out;
+    transition: width 1s ease;
 }
 
-/* Specific Colors for Bars */
-.steps-color { background: linear-gradient(90deg, var(--steps-grad-start), var(--steps-grad-end)); }
-.stat-label .fa-shoe-prints { color: #e17055; }
+.steps-color {
+    background: linear-gradient(to right, #fbbf24, #f97316);
+}
 
-.water-color { background: linear-gradient(90deg, var(--water-grad-start), var(--water-grad-end)); }
-.stat-label .fa-tint { color: var(--primary); }
+.water-color {
+    background: linear-gradient(to right, #38bdf8, #0ea5e9);
+}
 
-.sleep-color { background: linear-gradient(90deg, var(--sleep-grad-start), var(--sleep-grad-end)); }
-.stat-label .fa-bed { color: #6c5ce7; }
+.sleep-color {
+    background: linear-gradient(to right, #a78bfa, #7c3aed);
+}
 
-
-/* --- 2. Update Goals Form --- */
-.goal-update-form .form-grid {
+/* Goal Tacker Form */
+.form-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 15px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
 
 .input-group label {
     display: block;
     font-size: 0.85rem;
-    color: var(--light-text);
-    margin-bottom: 5px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-muted);
 }
 
-.input-group input, .input-group textarea, .input-group select {
+.input-group input,
+.input-group textarea,
+.input-group select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #dfe6e9;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
     border-radius: 8px;
-    background: #fdfdfd;
-    outline: none;
-    transition: border-color 0.3s;
+    font-family: var(--font-body);
 }
 
-.input-group input:focus, .input-group textarea:focus, .input-group select:focus {
-    border-color: var(--primary);
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
 }
 
 .submit-goal-btn {
     width: 100%;
     margin-top: 20px;
-    padding: 12px;
-    background: var(--primary-dark);
+    padding: 14px;
+    background: var(--primary-blue);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
+    font-weight: 600;
     cursor: pointer;
-    font-weight: 500;
     transition: background 0.3s;
 }
 
 .submit-goal-btn:hover {
-    background: #005a9c;
-}
-
-/* --- 3. BMI Card --- */
-.bmi-card button.calculate-btn {
-    width: 100%;
-    margin-top: 15px;
-    padding: 12px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.bmi-card button.calculate-btn:hover {
     background: var(--primary-dark);
 }
 
-#bmi-result {
-    margin-top: 15px;
-    text-align: center;
-    min-height: 20px;
+/* Services */
+.services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
-/* --- 4. Doctor Card --- */
+.service-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 12px;
+    transition: background 0.3s;
+}
+
+.service-item:hover {
+    background: #f1f5f9;
+}
+
+.icon-box {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.pharmacy-bg {
+    background: #ffedd5;
+    color: #f97316;
+}
+
+.clinic-bg {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+.service-info h4 {
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+}
+
+.service-info small {
+    color: var(--text-muted);
+}
+
+.nav-btn {
+    margin-left: auto;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    background: white;
+    color: var(--primary-blue);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Right Column: BMI & Doctor */
+.card.bmi-card button.calculate-btn {
+    width: 100%;
+    padding: 12px;
+    background: #1f2937;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.bmi-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.bmi-output {
+    text-align: center;
+    margin-top: 15px;
+    min-height: 20px;
+    font-weight: 700;
+}
+
 .doctor-profile {
     display: flex;
     align-items: center;
@@ -321,50 +424,52 @@ body {
 }
 
 .doctor-img-wrapper img {
-    width: 65px;
-    height: 65px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #f1f2f6;
+    border: 3px solid #f0f9ff;
 }
 
 .status-indicator {
-    width: 12px;
-    height: 12px;
-    background: var(--primary);
+    width: 14px;
+    height: 14px;
+    background: #22c55e;
     border: 2px solid white;
     border-radius: 50%;
     position: absolute;
     bottom: 5px;
-    right: 5px;
+    right: 0;
 }
 
 .doctor-info h4 {
-    margin: 0;
     font-size: 1rem;
+    margin-bottom: 4px;
 }
 
-.doctor-info .specialty {
+.specialty {
     font-size: 0.85rem;
-    color: var(--light-text);
-    margin-bottom: 5px;
+    color: var(--text-muted);
 }
 
 .availability {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     font-size: 0.75rem;
-    color: var(--primary);
-    background: rgba(9, 132, 227, 0.1); 
-    display: inline-block;
+    color: #15803d;
+    background: #dcfce7;
     padding: 2px 8px;
-    border-radius: 12px;
+    border-radius: 4px;
+    margin-top: 5px;
 }
 
 .book-now-btn {
     width: 100%;
     padding: 12px;
     background: white;
-    border: 2px solid var(--primary);
-    color: var(--primary);
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue);
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
@@ -372,74 +477,30 @@ body {
 }
 
 .book-now-btn:hover {
-    background: var(--primary);
+    background: var(--primary-blue);
     color: white;
 }
 
 .form-note {
-    font-size: 0.75rem;
-    color: var(--light-text);
+    font-size: 0.8rem;
+    color: var(--text-muted);
     text-align: center;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
-/* --- 5. Services --- */
-.services-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.service-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 10px;
-    border-radius: 8px;
-    transition: background 0.3s;
-}
-
-.service-item:hover {
-    background: #f8f9fa;
-}
-
-.icon-box {
-    width: 45px;
-    height: 45px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-}
-
-.pharmacy-bg { background: rgba(253, 203, 110, 0.2); color: #fd9644; }
-.clinic-bg { background: rgba(255, 118, 117, 0.2); color: #ff7675; }
-
-.service-item h4 {
-    margin: 0;
-    font-size: 0.95rem;
-}
-
-.service-item small {
-    color: var(--light-text);
-}
-
-/* --- SOS Button --- */
+/* --- FAB SOS BUTTON --- */
 .sos-button {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 70px;
-    height: 70px;
-    background: var(--danger);
+    bottom: 40px;
+    right: 40px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
     border: none;
     color: white;
-    font-weight: 800;
-    font-size: 1.1rem;
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(255, 118, 117, 0.4);
+    box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -447,204 +508,201 @@ body {
     transition: transform 0.3s;
 }
 
+.sos-text {
+    font-weight: 800;
+    font-size: 1.2rem;
+}
+
 .sos-button:hover {
-    transform: scale(1.1);
+    transform: scale(1.1) rotate(5deg);
 }
 
 .pulse-ring {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
     border-radius: 50%;
-    border: 3px solid var(--danger);
-    animation: pulse 2s infinite;
+    border: 4px solid rgba(239, 68, 68, 0.5);
+    animation: sos-pulse 2s infinite;
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(2); opacity: 0; }
+@keyframes sos-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
 }
 
-/* ************************************ */
-/* ENHANCED MODAL POPUP STYLES */
-/* ************************************ */
-
+/* --- MODALS --- */
 .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 2000; 
-    left: 0;
+    position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.6); /* Slightly darker overlay */
-    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: none;
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    /* Flex center */
 }
+
+/* Override display block from JS with !important if needed, but easier to use JS to clean styles. 
+   Currently JS sets display: block. We need to handle that. 
+   The JS sets display='block', so we need flex behavior from content spacing or use a wrapper.
+   Actually, let's keep it simple: Standard modal centering. */
 
 .modal-content {
-    background-color: var(--card-bg);
-    margin: 8% auto; /* Higher on the screen */
+    background: white;
+    width: 90%;
+    max-width: 500px;
     padding: 30px;
     border-radius: var(--radius);
-    width: 90%; 
-    max-width: 450px; /* Slightly narrower */
-    box-shadow: var(--modal-shadow);
     position: relative;
-    animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncier animation */
-    border-top: 5px solid var(--primary); /* Accent border on top */
+    margin: 10vh auto;
+    /* Fallback */
+    animation: slideDown 0.3s ease;
 }
 
-/* Modal Animation */
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(-50px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes slideDown {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
-/* Modal Header/Title Styling */
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #94a3b8;
+}
+
 .modal-header {
     display: flex;
     align-items: center;
     gap: 15px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #f1f5f9;
     padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 20px;
+}
+
+.modal-icon-box {
+    background: #e0f2fe;
+    color: var(--primary-blue);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1.2rem;
 }
 
 .modal-header h4 {
-    margin: 0;
     font-size: 1.3rem;
-    border-bottom: none; /* Removed redundant border */
-    padding-bottom: 0;
-}
-
-.modal-icon {
-    font-size: 1.8rem;
-    color: var(--primary); /* Blue for Doctor */
-}
-
-.danger-icon {
-    color: var(--danger) !important; /* Red for SOS */
-}
-
-.close-btn {
-    color: var(--light-text);
-    float: right;
-    font-size: 30px;
-    font-weight: 300; /* Lighter weight */
-    line-height: 1;
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    transition: color 0.3s;
-}
-
-.close-btn:hover,
-.close-btn:focus {
-    color: var(--primary);
-    text-decoration: none;
-    cursor: pointer;
-}
-
-/* Form Inputs within Modal */
-.input-group label {
-    font-weight: 600;
-    color: var(--dark-text);
 }
 
 .submit-request-btn {
     width: 100%;
-    padding: 12px;
-    margin-top: 25px; /* Increased margin for better spacing */
-    background: var(--primary);
+    padding: 14px;
+    background: var(--primary-blue);
     color: white;
     border: none;
     border-radius: 8px;
     font-weight: 600;
+    margin-top: 15px;
     cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
 }
 
-.submit-request-btn:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
+/* SOS Specific */
+.danger-theme {
+    border-top: 5px solid var(--danger-red);
+}
+
+.center-col {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-icon-big {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: var(--danger-red);
+}
+
+.warning-box {
+    background: #fef2f2;
+    padding: 15px;
+    border-radius: 8px;
+    color: #991b1b;
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.danger-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
 .sos-confirm-btn {
-    background: var(--danger); /* Red for SOS confirmation */
-    margin-top: 15px;
+    background: var(--danger-red);
 }
 
 .sos-confirm-btn:hover {
-    background: #c0392b;
+    background: #b91c1c;
 }
 
 .cancel-btn {
-    width: 100%;
-    padding: 12px;
-    background: #f5f6fa; /* Light gray */
-    color: var(--dark-text);
-    border: 1px solid #dfe6e9;
-    border-radius: 8px;
-    font-weight: 600;
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    padding: 10px;
     cursor: pointer;
-    transition: background 0.3s;
     margin-top: 10px;
+    font-weight: 600;
 }
 
-.cancel-btn:hover {
-    background: #dfe6e9;
+.success-icon-anim {
+    font-size: 4rem;
+    color: var(--success-green);
+    margin-bottom: 15px;
 }
 
-/* SOS Confirmation specific text */
-.warning-text {
-    font-size: 1.1rem;
-    color: var(--dark-text);
-    margin: 20px 0;
-    line-height: 1.4;
-    text-align: center;
-}
-
-/* Request Status Step */
-#request-status-step {
-    text-align: center;
-}
-
-#status-message {
-    margin: 20px 0 30px;
-    color: var(--light-text);
-    font-size: 1rem;
-    line-height: 1.5;
-}
-
-#status-icon {
-    font-size: 2.5rem;
-}
-
-/* --- Responsive --- */
+/* RESPONISVE */
 @media (max-width: 900px) {
-    .dashboard-container {
+    .dashboard-grid {
         grid-template-columns: 1fr;
     }
-    
-    .nav-links {
-        display: none; 
+
+    .header {
+        padding: 0 20px;
     }
-    
+
+    .dashboard-container {
+        padding: 20px;
+    }
+
     .progress-layout-wrapper {
         flex-direction: column;
         text-align: center;
-    }
-    
-    .stats-container {
-        width: 100%;
-    }
-    
-    .goal-update-form .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .modal-content {
-        margin: 15% 10px;
     }
 }
